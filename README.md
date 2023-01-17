@@ -1,2 +1,2 @@
 # waitlist
-Hello world
+Hello world!
