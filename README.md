@@ -4,32 +4,42 @@ This application will provide the ability to track wait lists and estimated time
 ## Description
 This application is applicable to restaurants, as well as other types of businesses. The application provides rich interaction both for the customers who are waiting, as well as the business who is managing the wait list. It is "smart" in being able to track how fast the waitlist is flowing and provide estimates for users on how long it will take before they are served.
 
-This will be delivered as a seperate web server instance for each customer who purchases the app, containing its own database, runtime layer, and UI layer.
+This will be delivered as a multi-tenanted service (Software-as-a-Service or SaaS). Data will be stored in an Azure SQL database, with ASP.NET Core Blazor for a middle tier and a browser-based client. Authentication will be done using Azure Active Directory (AAD). Customers will be able to sign up to create an environment in the multi-tenanted service. Both administrators and users will access the program through the web interface.
 
-## Stakeholders
+Many of the stories and details will talk in terms of restaurants, though this application is not scoped to only restaurants. It is applicable to any business that needs to track a waitlist.
 
-Customers (Restaurant Onwner)
+## Stakeholders and their Interests 
+
+Stakeholders are people who care about a given software program in any way. Often different stakeholders have different needs and desires related to the software. Explicitly listing all of the stakeholders, as well as what interests drive them, helps ensure that we properly capture requirements and design the software in such a way that all stakeholder needs are met. Often times it is too easy to forget about people like the IT staff at the customer who is using the software. Or the owners of the business who need to justify the cost of the software based on time to value. Explicitly enumerating all of the stakeholders avoids these mistakes.
+
+### The Software Developer and Maintainer
+ - Managable (visibility into telemetry, ways of diagnosing and tracking, etc)
+ - Low operating costs
+ - Easy to deploy and change
+ - Support multiple POS systems (integrations to other)
+ 
+### Restaurant Owners
  - Cheap (cost to purchase and run)
- - Happy customers
+ - Easy to acquire and get set up
+ - Fast time to value 
+ - High return on investment (ROI)
+ - Keep customers happy
+ - Reduce operational costs and the restaurant run more smoothly
  - Able to integrate to other systems
 
-Me (The software developer)
- - Managable (visibility into telemetry, ways of diagnosing and tracking, etc)
- - Cheap to run and operation
- - Support multiple POS systems (integrartions to other)
- - Easy to deploy and change
-
-Guests (Restaurant customers)
+### Restaurant Customers
  - Accurate
  - Easy to use, view
 
-Employees (Restaurant workers)
+### Employees (Restaurant workers)
  - Accurate
- - Easy to use
- - Easy to maintain
-
+ - Fast and easy to use with little to no training
+ - Simple to fix things in edge cases like a restaurant customer not answering when called, but then later showing back up
+ - Easy to understand the current waitlist at a glance while having a conversation with a customer
 
 ## Personas
+
+Personas are used in user-centered design. They are not real people, but are examples of what a typical user may look like. They are used both when writing specifications to help tell the story of how software should work, as well as to make conversations about functionality easier. Instead of describing all the usage patterns, security rights, and other aspects of a situation, you can just say "this is applicable to the Nancy persona" and everyone on the team understands the type of user it applies to and what that user expects from the software. Each persona should be one of the stakeholders of the system, most commonly users of the system.
 
 ### Phil - Restaurant Owner
 Phil is 43 years old and owns the local Red Robin restaurant as a franchisee. He hopes to be one of the top restaurants in the chain with the most satisfied customers as measured by customer surveys. Phil is comfortable using computers, and runs many reports from various systems including the Point of Sale (POS) system in the course of business. He is willing to invest in his business as long as those investments return benefits.
@@ -43,12 +53,21 @@ Jeff is a big fan of hamburgers and loves french fries. He is a frequent restaur
 
 ## User Stories
 
-User Story #1 (Jeff, customer)
+User stories help you think through how a customer will ideally interact with the software. They start with a situation, a challenge to be met, how the software helps meet that challenge, and how the user experiences a good outcome. Writing user stories helps you think through what ideal real-world experiences will be with your software, prior to getting into detailed requirements and features. Usually the same persona will have multiple user stories since they will interact with the software in multiple ways.
+
+### User Story #1 (Jeff, customer)
 Jeff wants to go eat supper at Red Robin. There are currently many people waiting for a table. He wants to stay in his truck until his table is ready, and doesn't even want to have to push through the crowd to get his name on the list. He goes to the Red Robin website and clicks on the "add me to waitlist button". He is redirected to the waitlist application and prompted for how many people are with him. His name then shows up on the list with and approximate wait time and his position in the list. It refreshes every few seconds until it notifies him it is his turn and he should come to the server stand.
 
-User Story #2 (Nancy, restaurant employee)
-Nancy is well versed with technology and works at Red Robin as the hostess. A customer walks in on a busy day and asks what the wait time is. Nancy looks at the point of sale system and sees the list of people currently waiting as well as a big notice at the top saying the wait time is 25 minutes for 4 people. The customer says "I have a group of 8 and we MUST sit together". She starts adding the customer to the waitlist by clicking "add" and putting in a party size of 8. The product shows them on the list with a wait time of 37 minutes. Nancy tells the customer it will be 37 minutes. The customer is very happy with the extremely precise answer and walks away to wait patiently.
+### User Story #2 (Nancy, restaurant employee)
+ A customer walks in on a busy day while Nancy is working and asks what the wait time is. Nancy looks at the point of sale system and sees the list of people currently waiting as well as a big notice at the top saying the wait time is 25 minutes for 4 people. The customer says "I have a group of 8 and we MUST sit together". She starts adding the customer to the waitlist by clicking "add" and putting in a party size of 8. The product shows them on the list with a wait time of 37 minutes. This is highlighted as being longer than other tables because of the large group size. Nancy tells the customer it will be 37 minutes based on their group size. The customer is very happy with the extremely precise answer and walks away to wait patiently.
 
+### User Story #3 (Nancy, restaurant employee)
+A free table has just opened up at the restaurant while Nancy is working. He looks at the waitlist app and calls the name of the next person on the list. There is no answer. Nancy calls again. Still no answer. So she marks "no response" on that party and moves to the next on the list. The next time there is an open table she tries again, still no response. At this point she knows that party is not around, and knows she has previously tried them based on being marked as no response. She now selects "no-show" on that party. The person in that party which had left without telling Nancy sees a notification pop up in their application that their waitlist space has been cancelled due to no response. They were already at another restaurant, so are fine with being cancelled. Nancy is happy it was easy to track the no-show as well as to notify them in a way that would help them understand what had happened.
 
-## Use Case Diagrams (Lucid.app)
-![Alt text](./DocImages/Waitlist%20Use%20Case%20Diagrams.jpeg "Use Case Diagrams")
+## Use Case Diagrams
+
+Use case diagrams are tools used to understand which users perform which activities in a given application. We have used the user stories to help elicit what many of these activities are. The activities in a use case diagram are *not* the same as user stories. A single user story about adding a party to a waitlist and eventually removing them may involve multiple activities (adding a party, removing a party, etc), as well as multiple actors (the restaurant staff, the customer, etc). To draw a use case diagram, all you need is access to stick figures, ovals, and lines. In class I demo'd using Lucid.app, a free service. You can just as easily use PowerPoint or Visio or even just a paper and pencil and then take a picture of it when done. Of course, it's best if everyone on the team can read the handwriting in the diagram. That is why I prefer the online tool.
+
+In the diagram below we see that some activities like checking the current estimated wait time are things done by multiple users, while other actions changing the branding of the application are only applicable to one user.
+
+![Alt text](./DocImages/Waitlist%20Use%20Case%20Diagrams.png "Use Case Diagrams")
