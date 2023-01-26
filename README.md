@@ -71,3 +71,24 @@ Use case diagrams are tools used to understand which users perform which activit
 In the diagram below we see that some activities like checking the current estimated wait time are things done by multiple users, while other actions changing the branding of the application are only applicable to one user.
 
 ![Alt text](./DocImages/Waitlist%20Use%20Case%20Diagrams.png "Use Case Diagrams")
+
+## Requirements
+
+### Functional
+
+1. Worker persona must be able to specify the number of people in a party. When this is specified, the estimated wait time should reflect the new estimate immediately.
+2. Worker must be able to manually add a party who previously wasn't on the list.
+3. Worker must be able to manually remove a party, regardless of position on the list.
+4. Worker must be able to take the "next" party, which should always be the one currently waiting.
+5. Software must allow the owner persona to edit the theme. They should be able to pick colors, and logo.
+6. When deleting a guest from the list, it should show in a recycle bin for at least 10 minutes before disappering.
+
+### Non-Functional
+
+1. Every interaction should be less than 200ms.
+2. Guest personas must be able to interact unauthenticated, while worker personas require a login to be able to do admin-level functions.
+3. All interactions require a simple undo.
+4. Must have telemetry for monitoring and troubleshooting by the helpdesk.
+
+### Non-Requirements
+1. Requires an active internet connection at all times, not required to support offline mode.
