@@ -92,3 +92,15 @@ In the diagram below we see that some activities like checking the current estim
 
 ### Non-Requirements
 1. Requires an active internet connection at all times, not required to support offline mode.
+
+### Public Auth Signin Process
+
+The waitlist application will let users sign in to the waitlist without any form of signup at all in order to ensure friction-free signups. But at the same time we need to ensure other people cannot mess with other people's wait requests. To accomplish this, we will have the browser generate a secret value, and pass that to the website as its only identifier. As long as the browser remembers the secret, it can be used to both edit the request, as well as check the request status. Other people can see the request, but can not edit it without having the secret.
+
+The process diagram shows the overall decisions made in adding a user to the waitlist.
+
+![Alt text](./DocImages/Waitlist%20Public%20Auth%20Flowchart.png) "Public Auth Process")
+
+The sequence diagram shows the subsystems and services involved, and the lifespan of their requests.
+
+![Alt text](./DocImages/Waitlist%20Public%20Auth%20Sequence%20Diagram.png) "Public Auth Sequence Diagram")
