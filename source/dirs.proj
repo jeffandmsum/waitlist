@@ -1,0 +1,16 @@
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', $(MSBuildThisFileDirectory)))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props', $(MSBuildThisFileDirectory))))" />
+  <ItemGroup>
+    <ProjectToBuild Include="WaitlistApplication\dirs.proj" />
+  </ItemGroup>
+  <Target Name="Clean">
+    <MSBuild Projects="@(ProjectToBuild)" BuildInParallel="True" Targets="Clean" />
+  </Target>
+  <Target Name="Restore">
+    <MSBuild Projects="@(ProjectToBuild)" BuildInParallel="False" Targets="Restore" />
+  </Target>
+  <Target Name="Build">
+    <MSBuild Projects="@(ProjectToBuild)" BuildInParallel="False" />
+  </Target>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', $(MSBuildThisFileDirectory)))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', $(MSBuildThisFileDirectory))))" />
+</Project>
