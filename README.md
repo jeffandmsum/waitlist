@@ -6,8 +6,9 @@
 
 ## Building
 * Open the repo using the Visual Studio 2022 Developer Command Prompt
-* From the root of the repo type "msbuild /restore dirs.proj"
+* To build, from the root of the repo type "dotnet build dirs.proj"
+* To build and test, from the root of the repo type "dotnet test dirs.proj"
 * Note, any new projects or types added must automatically build as part of building dirs.proj
 
 ## Running
-* Open <repo>\source\WaitlistApplication\WaitlistApplication.sln and hit F5
+* Open WaitlistApplication.sln and hit F5
