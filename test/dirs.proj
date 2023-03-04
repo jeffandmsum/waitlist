@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.Build.Traversal">
   <ItemGroup>
     <!-- Build all csproj and vbproj -->
-    <ProjectReference Include="source/dirs.proj" />
-    <ProjectReference Include="test/dirs.proj" />
+    <!-- <ProjectReference Include="**/*.*proj" /> -->
   </ItemGroup>
 </Project>
