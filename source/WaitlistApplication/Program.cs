@@ -1,7 +1,7 @@
 using WaitlistApplication;
 
 // Initialize the database connection before starting anything else to avoid race conditions
-DatabaseManager.Initialize();
+//DatabaseManager.Initialize();
 
 var builder = WebApplication.CreateBuilder(args);
 
