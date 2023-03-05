@@ -1,3 +1,8 @@
+using WaitlistApplication;
+
+// Initialize the database connection before starting anything else to avoid race conditions
+DatabaseManager.Initialize();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
