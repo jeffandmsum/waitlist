@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App WaitlistApplication
 on:
   push:
     branches:
-    - user/jeffand/deploy
+    - main
 env:
   AZURE_WEBAPP_NAME: WaitlistApplication
   AZURE_WEBAPP_PACKAGE_PATH: source/WaitlistApplication/published
