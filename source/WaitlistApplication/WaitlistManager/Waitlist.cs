@@ -11,7 +11,7 @@
 
         public int GetWaitlistLength()
         {
-            return pendingRequests.Count + 1;
+            return pendingRequests.Count;
         }
     }
 }
