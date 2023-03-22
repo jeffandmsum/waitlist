@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -20,6 +22,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
 app.UseRouting();
 
