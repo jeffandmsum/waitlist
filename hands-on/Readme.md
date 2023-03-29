@@ -35,3 +35,34 @@ Large Language Models provide a unique opportunity to drastically improve this e
    (The original 520 page PDF from the US government)
 3. ProductExamples.txt
    (Four real-world products that should be classified under US EAR, courtesy of ChatGPT)
+
+### Example we want it to work for
+
+[Kongsberg MGC-R3 Magnetic Gyrocompasse](https://www.kongsberg.com/globalassets/maritime/km-products/product-documents/mgc-r3-gyro-compass-and-ins), classified in the US as 7A994.
+
+Name: MGC-R3 Gyro Compass and ISN
+Manufacturer: Kongsberg
+Description: 
+
+The MGC R3 product is a fully inertial navigation system 
+(INS). It can output heading, roll, pitch, heave and 
+position. Acceleration and velocity of linear motions, as 
+well as angular rates, are output from the unit. The MGC 
+R3 product outputs both processed and raw (gyro and 
+accelerometer) sensor data.
+
+The MGC R3 product can be used as a stand-alone unit 
+or as an IMU in other systems. The product is designed 
+for high precision maritime applications such as offshore 
+operations and seabed mapping
+
+• 0.01° roll and pitch accuracy
+• 0.04° heading accuracy GNSS aided
+• Includes INS capability
+• Outputs on RS-232, RS-422 and Ethernet
+• High output data rate (200 Hz)
+• Precise heave at long wave periods by use of PFreeHeave® algorithms
+• Lever arm compensation to two individually configurable monitoring points
+• Small size and low power consumption
+• Each MGC delivered with a Calibration Certificate
+• Selectable communication protocols in the Windows based configuration software
