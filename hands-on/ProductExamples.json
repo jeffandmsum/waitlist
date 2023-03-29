@@ -1,0 +1,16 @@
+[{"Name": "R&S®FSMR Signal and Spectrum Analyzer by Rohde & Schwarz",
+  "Manufacturer": "Rohde & Schwarz",
+  "Description": "The R&S®FSMR signal and spectrum analyzer is a high-performance instrument for signal analysis of a wide range of standards in the frequency range from 20 Hz to 26.5 GHz. It offers a variety of measurement functions including power measurement, signal-to-noise ratio, and adjacent channel power ratio. It also features an internal tracking generator and supports measurements of frequency response and group delay of components and systems."
+},
+{"Name": "FLIR Vue® TZ20 Dual Thermal Camera",
+  "Manufacturer": "FLIR Systems",
+  "Description": "The FLIR Vue® TZ20 is a dual thermal camera that provides both wide-angle and zoomed-in thermal imaging capabilities. It is designed for use in a variety of industries, including search and rescue, surveillance, and inspection. The camera features a 20x zoom lens and can capture thermal video and images at a resolution of up to 640x512 pixels. It also has a built-in laser rangefinder and GPS, making it ideal for outdoor applications."
+},
+{"Name": "Trimble R10 GNSS System",
+  "Manufacturer": "Trimble Inc.",
+  "Description": "The Trimble R10 GNSS system is a high-precision GPS receiver that provides real-time centimeter-level accuracy. It can track signals from multiple satellite constellations, including GPS, GLONASS, Galileo, and BeiDou. The receiver also features advanced processing algorithms for optimal accuracy in challenging environments. It is commonly used in surveying, mapping, and geodesy applications."
+},
+{"Name": "Tektronix RSA7100A Real-Time Spectrum Analyzer",
+  "Manufacturer": "Tektronix",
+  "Description": "The Tektronix RSA7100A Real-Time Spectrum Analyzer is a high-performance instrument that provides real-time signal analysis up to 26.5 GHz. It offers a variety of measurement functions including time domain analysis, phase noise measurements, and channel power measurements. It also features a high dynamic range and a wide range of analysis bandwidths. The RSA7100A can be used for a variety of applications including radar and satellite signal analysis, wireless communications, and spectrum management."
+}]
