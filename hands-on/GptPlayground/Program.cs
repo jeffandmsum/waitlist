@@ -15,8 +15,18 @@ internal class Program
         List<ECCN> eccns = ReadEccnData();
         List<Product> products = ReadProductData();
 
+        // Try stuff interactively
         //ProcessUserInput();
+
+        // Process across a set of four sample products
         //ProcessProducts(products, eccns);
+        
+        // See how good it does against the MGCR3, which the manufacturer classifies as 7A994
+        ProcessMGCR3(eccns);
+    }
+
+    private static void ProcessMGCR3(List<ECCN> eccns)
+    {
         ProcessProducts(new List<Product>() { new Product
         {
             Name = "MGC-R3 Gyro Compass and ISN",
@@ -67,11 +77,32 @@ operations and seabed mapping
     {
         foreach (Product product in products)
         {
-            string prompt = BuildPromptForProduct(product);
+            List<GptPlayground.Prompt> prompts = new List<GptPlayground.Prompt>();
+
+            // System prompt tells the system what type of LLM it is
+            prompts.Add(new GptPlayground.Prompt
+            {
+                role = ChatRole.System,
+                content = "You are an assistant helping determine which export control classification number (ECCN) should be used to classify a product. You do NOT know anything about existing jurisdictions or regimes. You do not know any ECCN information other than what we provide to you."
+            });
+
+            // Assistant prompts give background information and other data to the LLM
+            prompts.Add(new GptPlayground.Prompt
+            {
+                role = ChatRole.Assistant,
+                content = $"An example of an ECCN is {eccns.First().Code}, which has description {eccns.First().Description} and controls items {eccns.First().ItemsControlled}."
+            });
+
+            // User prompts ask the LLM to do something it will respond to
+            prompts.Add(new GptPlayground.Prompt
+            {
+                role = ChatRole.User,
+                content = BuildPromptForProduct(product)
+            });
 
             Console.WriteLine("***********************************************************************************************");
             Console.WriteLine($"Product {product.Name} from {product.Manufacturer}:");
-            Completion completion = GPT.CallGpt(prompt).Result;
+            Completion completion = GPT.CallGpt(prompts, 200).Result;
             ShowCompletion(completion);
             Console.WriteLine("***********************************************************************************************");
             Console.WriteLine();
@@ -83,10 +114,11 @@ operations and seabed mapping
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.Append("Tell me what the proper ECCN for a product with the following attributes is:");
+        sb.Append("Give me the top 5 most likely ECCN numbers for the following product along with a percentage likelihood each is the right answer and a short one-sentence explanation as to why in decreasing order:");
         sb.Append($"Name: {product.Name}");
         sb.Append($"Manufacturer: {product.Manufacturer}");
         sb.Append($"Description: {product.Description}");
+        sb.Append("Return the results as a JSON array with no extra explanation.");
 
         return sb.ToString();
     }
@@ -94,14 +126,15 @@ operations and seabed mapping
     #region Data Loading and Console Helpers
     private static void ShowCompletion(Completion completion)
     {
-        Console.WriteLine(completion.choices.FirstOrDefault()?.text);
+        Console.WriteLine();
+        Console.WriteLine(completion.choices.FirstOrDefault()?.message?.content);
         Console.WriteLine($"{completion.usage.prompt_tokens} prompt tokens, {completion.usage.completion_tokens} completion tokens, {completion.usage.cost.ToString("C5")} cost");
         Console.WriteLine();
     }
 
     private static string ReadPrompt()
     {
-        Console.WriteLine("Prompt?");
+        Console.WriteLine("Prompt? (hit enter twice to submit the request)");
         StringBuilder result = new StringBuilder();
 
         string line = Console.ReadLine();

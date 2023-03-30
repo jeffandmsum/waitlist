@@ -31,7 +31,11 @@ namespace WaitlistApplication.Pages.GPT
 
         public void OnPost()
         {
-            CallGpt().Wait();
+            string input = Input ?? "";
+
+            var completion = CallGpt(input).Result;
+
+            UpdateHistory(input, completion.choices.FirstOrDefault()?.message?.content ?? "", completion.usage.prompt_tokens, completion.usage.completion_tokens, completion.usage.cost);
         }
 
         private void UpdateHistory(string input, string response, int promptTokens, int completionTokens, decimal cost)
@@ -63,25 +67,31 @@ namespace WaitlistApplication.Pages.GPT
             return openAIKey;
         }
 
-        private async Task CallGpt()
+        public async Task<Completion> CallGpt(IEnumerable<Prompt> prompts, int maxTokens = 2000)
         {
-            string input = Input;
+            IEnumerable<SerializedPrompt> serializedPrompts = prompts.Select(x => new SerializedPrompt()
+            {
+                role = Enum.GetName(typeof(ChatRole), x.role).ToLower(),
+                content = x.content
+            });
 
             // Use GPT3 for generation
             var body = new
             {
-                prompt = input,
-                model = "text-davinci-003",
-                max_tokens = 2000
+                //prompt = "user input goes here",
+                //model = "text-davinci-003",
+                messages = serializedPrompts.ToArray(),
+                model = "gpt-3.5-turbo",
+                max_tokens = maxTokens
             };
 
             var content = JsonConvert.SerializeObject(body);
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/completions");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/chat/completions");
             httpRequest.Headers.Add("Authorization", $"Bearer {await GetOpenAIKey()}");
             httpRequest.Content = new StringContent(content, Encoding.UTF8, "application/json");
 
-            var httpClient = clientFactory.CreateClient();
+            var httpClient = new HttpClient();
             httpClient.Timeout = new TimeSpan(0, 0, 200);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = await httpClient.SendAsync(httpRequest);
@@ -91,15 +101,74 @@ namespace WaitlistApplication.Pages.GPT
                 throw new Exception($"GPT error - {resultString}");
             }
 
-            dynamic aiResult = JsonConvert.DeserializeObject(resultString);
+            Completion completion = JsonConvert.DeserializeObject<Completion>(resultString);//, new ChoiceConverter());
 
-            int promptTokens = aiResult.usage.prompt_tokens;
-            int completionTokens = aiResult.usage.completion_tokens;
-            int totalTokens = aiResult.usage.total_tokens;
-            decimal cost = totalTokens * 0.02M / 1000;
-            string completion = aiResult.choices[0].text;
+            if (completion != null && completion.usage != null)
+            {
+                completion.usage.cost = (completion.usage.total_tokens * 0.002M / 1000);
+            }
 
-            UpdateHistory(input, completion, promptTokens, completionTokens, cost);
+            while (completion.choices?.FirstOrDefault()?.message?.content?.StartsWith("\n") == true || completion.choices?.FirstOrDefault()?.message?.content?.StartsWith(" ") == true)
+            {
+                completion.choices[0].message.content = completion.choices[0].message.content.Substring(1);
+            }
+
+            return completion;
         }
+
+        public async Task<Completion> CallGpt(string userInput, int maxTokens = 2000)
+        {
+            return await CallGpt(new List<Prompt>() { new Prompt {
+                role = ChatRole.User,
+                content = userInput
+            } }, maxTokens);
+        }
+    }
+
+    public enum ChatRole
+    {
+        System,
+        Assistant,
+        User,
+    }
+
+    public class SerializedPrompt
+    {
+        public string role { get; set; }
+        public string content { get; set; }
+    }
+
+    public class Prompt
+    {
+        public ChatRole role { get; set; }
+        public string content { get; set; }
+    }
+
+    public class Completion
+    {
+        public string model { get; set; }
+        public Choice[] choices { get; set; }
+        public Usage usage { get; set; }
+    }
+
+    public class Choice
+    {
+        public SerializedPrompt message { get; set; }
+        public int index { get; set; }
+        public string finish_reason { get; set; }
+    }
+
+    public class Message
+    {
+        public string role { get; set; }
+        public string content { get; set; }
+    }
+
+    public class Usage
+    {
+        public int prompt_tokens { get; set; }
+        public int completion_tokens { get; set; }
+        public int total_tokens { get; set; }
+        public decimal cost { get; set; }
     }
 }

@@ -24,7 +24,7 @@ Large Language Models provide a unique opportunity to drastically improve this e
    (Note, this is sometimes overloaded, so not always available)
 2. http://waitlistapplication.azurewebsites.net/GPT
    (Each call here costs me money, so be nice)
-3. C# starter console app with key provided in class
+3. C# GptPlayground app (hands-on/GptPlayground) with key provided in class
 4. Postman or tool of your choice with key provided in class
 
 ### Data Available
@@ -36,7 +36,7 @@ Large Language Models provide a unique opportunity to drastically improve this e
 3. ProductExamples.txt
    (Four real-world products that should be classified under US EAR, courtesy of ChatGPT)
 
-### Example we want it to work for
+### Example we want it to predict
 
 [Kongsberg MGC-R3 Magnetic Gyrocompasse](https://www.kongsberg.com/globalassets/maritime/km-products/product-documents/mgc-r3-gyro-compass-and-ins), classified in the US as 7A994.
 
@@ -66,3 +66,9 @@ operations and seabed mapping
 • Small size and low power consumption
 • Each MGC delivered with a Calibration Certificate
 • Selectable communication protocols in the Windows based configuration software
+
+### To make it difficult
+
+Usually there are multiple different codes which could be selected. We want to ask the user questions which help narrow things down, and get better results over time.
+
+The LLM already knows about old and out of date information. We want it to instead focus upon the ECCN data that we pass it directly.
