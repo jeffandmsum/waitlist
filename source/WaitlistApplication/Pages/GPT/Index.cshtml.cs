@@ -49,6 +49,12 @@ namespace WaitlistApplication.Pages.GPT
 
             HtmlHistory = $"<DIV class=\"history-item\"><DIV class=\"userinputtitle\">Prompt</DIV><DIV class=\"userinputvalue\">{input}</DIV></DIV><DIV><DIV class=\"machineoutputtitle\">Completion</DIV><DIV class=\"machineoutputvalue\">{response}</DIV><DIV class=\"completion-details\"><DIV class=\"completion-prompttokens\">Prompt Tokens: {promptTokens}</DIV><DIV class=\"completion-responsetokens\">Response Tokens: {completionTokens}</DIV><DIV class=\"completion-cost\">Total Cost: {cost.ToString("C5")}</DIV></DIV></DIV>" + HtmlHistory;
 
+            // Trim history to avoid 431 errors
+            while (HtmlHistory.Length > 6500)
+            {
+                HtmlHistory = HtmlHistory.Substring(0, HtmlHistory.LastIndexOf("<DIV class=\"history-item\">"));
+            }
+
             TempData["HtmlHistory"] = HtmlHistory;
         }
 
