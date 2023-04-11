@@ -1,5 +1,7 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -118,6 +120,17 @@ namespace WaitlistApplication.Pages.GPT
             {
                 completion.choices[0].message.content = completion.choices[0].message.content.Substring(1);
             }
+
+            // Log telemetry every time someone uses GPT
+            TelemetryClient telemetryClient = new TelemetryClient(new TelemetryConfiguration("29d027f8-075c-41ee-89d6-7f34b1849a54"));
+            telemetryClient.TrackEvent(
+                "CallGPT", 
+                new Dictionary<string, string>() 
+                {
+                    { "Cost", completion.usage.cost.ToString() },
+                    { "Prompt", prompts?.FirstOrDefault()?.content ?? "" },
+                    { "Completion", completion?.choices?.FirstOrDefault()?.message?.content ?? "" },
+                });
 
             return completion;
         }
